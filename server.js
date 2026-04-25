@@ -19,6 +19,10 @@ const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 const app = express();
 app.use(express.json());
 
+// Trust proxy for Railway / production (secure cookies behind reverse proxy)
+// MUST be set BEFORE session middleware so secure cookies work correctly
+if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
+
 // ── Session ──
 const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'ratemystuff-dev-secret-change-in-prod',
@@ -34,40 +38,59 @@ const sessionConfig = {
 
 // Use MongoDB session store in production for persistence across restarts
 if (process.env.NODE_ENV === 'production' && MONGO_URI !== 'mongodb://localhost:27017') {
-  sessionConfig.store = MongoStore.create({
-    mongoUrl: MONGO_URI,
-    dbName: DB_NAME,
-    collectionName: 'sessions',
-    ttl: 30 * 24 * 60 * 60, // 30 days
-  });
+  try {
+    sessionConfig.store = MongoStore.create({
+      mongoUrl: MONGO_URI,
+      dbName: DB_NAME,
+      collectionName: 'sessions',
+      ttl: 30 * 24 * 60 * 60, // 30 days
+    });
+    console.log('✅ MongoDB session store configured');
+  } catch (err) {
+    console.error('⚠️  Failed to create MongoDB session store:', err.message);
+  }
 }
 
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Trust proxy for Railway / production (secure cookies behind reverse proxy)
-if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
-
 // ── MongoDB Connection ──
 let db;
-async function connectDB() {
-  const client = new MongoClient(MONGO_URI);
-  await client.connect();
-  db = client.db(DB_NAME);
-  console.log('✅ Connected to MongoDB');
+async function connectDB(retries = 5) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      console.log(`🔄 MongoDB connection attempt ${attempt}/${retries}...`);
+      const client = new MongoClient(MONGO_URI, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+      });
+      await client.connect();
+      db = client.db(DB_NAME);
+      console.log('✅ Connected to MongoDB');
 
-  // Create indexes
-  await db.collection('items').createIndex({ category: 1 });
-  await db.collection('items').createIndex({ upvotes: -1 });
-  await db.collection('items').createIndex({ submittedAt: -1 });
-  await db.collection('items').createIndex({ name: 'text', tagline: 'text' });
+      // Create indexes
+      await db.collection('items').createIndex({ category: 1 });
+      await db.collection('items').createIndex({ upvotes: -1 });
+      await db.collection('items').createIndex({ submittedAt: -1 });
+      await db.collection('items').createIndex({ name: 'text', tagline: 'text' });
 
-  // Seed data if collection is empty
-  const count = await db.collection('items').countDocuments();
-  if (count === 0) {
-    await seedDatabase();
+      // Seed data if collection is empty
+      const count = await db.collection('items').countDocuments();
+      if (count === 0) {
+        await seedDatabase();
+      }
+      return; // Success
+    } catch (err) {
+      console.error(`❌ MongoDB attempt ${attempt} failed:`, err.message);
+      if (attempt < retries) {
+        const delay = Math.min(attempt * 2000, 10000);
+        console.log(`⏳ Retrying in ${delay / 1000}s...`);
+        await new Promise(r => setTimeout(r, delay));
+      }
+    }
   }
+  throw new Error('Failed to connect to MongoDB after all retries');
 }
 
 // ── Seed Data ──
@@ -243,10 +266,21 @@ async function seedDatabase() {
   console.log('🌱 Seeded database with', items.length, 'items');
 }
 
+// ── Health Check (no DB required) ──
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', dbConnected: !!db, timestamp: new Date().toISOString() });
+});
+
 // ── API Routes ──
 
+// Middleware to check DB connection
+const requireDB = (req, res, next) => {
+  if (!db) return res.status(503).json({ error: 'Database not connected yet, please try again shortly' });
+  next();
+};
+
 // Get all items
-app.get('/api/items', async (req, res) => {
+app.get('/api/items', requireDB, async (req, res) => {
   try {
     const { category, search, sort } = req.query;
     const filter = {};
@@ -531,10 +565,19 @@ app.get('*', (req, res) => {
 });
 
 // ── Start Server ──
+// Start the HTTP server immediately so Railway healthchecks pass,
+// then connect to MongoDB in the background
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Pulse running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`📍 Base URL: ${BASE_URL}`);
+});
+
+// Connect to MongoDB after server is listening
 connectDB().then(() => {
   setupPassport();
-  app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Pulse running on port ${PORT}`));
+  console.log('✅ Server fully initialized');
 }).catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-  process.exit(1);
+  console.error('❌ Failed to connect to MongoDB:', err.message);
+  console.error('Server will continue running but API routes will return 503');
 });
