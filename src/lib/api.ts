@@ -1,9 +1,9 @@
-import { supabase } from './supabase';
+// localStorage-based storage — no database needed
 
 export type Feedback = {
   id: string;
   target: string;
-  comment?: string;
+  comment: string;
   rating_design: number;
   rating_speed: number;
   rating_usability: number;
@@ -11,52 +11,49 @@ export type Feedback = {
   created_at: string;
 };
 
-// Ensure API fails gracefully if Supabase is not configured
-const isConfigured = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_URL !== 'https://placeholder-project.supabase.co';
+const STORAGE_KEY = 'pulse_feedbacks';
+
+function readAll(): Feedback[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeAll(feedbacks: Feedback[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbacks));
+}
+
+// Simple event emitter so the dashboard updates instantly
+type Listener = (feedbacks: Feedback[]) => void;
+const listeners = new Set<Listener>();
+
+function notify() {
+  const all = readAll();
+  listeners.forEach((fn) => fn(all));
+}
 
 export const api = {
-  async fetchFeedbacks(): Promise<Feedback[]> {
-    if (!isConfigured) {
-      console.warn('Supabase is not configured. Please add VITE_SUPABASE_URL to your .env.local file.');
-      return [];
-    }
-
-    const { data, error } = await supabase
-      .from('feedback')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100);
-    
-    if (error) throw error;
-    return data as Feedback[];
+  fetchFeedbacks(): Feedback[] {
+    return readAll();
   },
 
-  async insertFeedback(feedback: Omit<Feedback, 'id' | 'created_at'>): Promise<void> {
-    if (!isConfigured) {
-      alert('Database connection missing! Add VITE_SUPABASE_URL to .env.local');
-      return;
-    }
-
-    const { error } = await supabase.from('feedback').insert([feedback]);
-    if (error) throw error;
-  },
-
-  subscribeToFeedbacks(callback: (feedback: Feedback) => void): () => void {
-    if (!isConfigured) return () => {};
-
-    const sub = supabase
-      .channel('public:feedback')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'feedback' },
-        (payload) => {
-          callback(payload.new as Feedback);
-        }
-      )
-      .subscribe();
-    
-    return () => {
-      supabase.removeChannel(sub);
+  insertFeedback(feedback: Omit<Feedback, 'id' | 'created_at'>): void {
+    const entry: Feedback = {
+      ...feedback,
+      id: crypto.randomUUID(),
+      created_at: new Date().toISOString(),
     };
-  }
+    const all = readAll();
+    all.unshift(entry);
+    writeAll(all);
+    notify();
+  },
+
+  subscribe(fn: Listener): () => void {
+    listeners.add(fn);
+    return () => listeners.delete(fn);
+  },
 };
