@@ -1,23 +1,31 @@
 {
-  "name": "code-sprint-project",
+  "name": "pulse-portal",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:server": "node server.js",
     "build": "tsc -b && vite build",
-    "start": "npx serve -s dist -l ${PORT:-3000}",
+    "start": "node server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@types/canvas-confetti": "^1.9.0",
     "canvas-confetti": "^1.9.4",
+    "dotenv": "^17.4.2",
+    "express": "^4.21.0",
+    "express-session": "^1.19.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.11.0",
+    "mongodb": "^6.10.0",
+    "connect-mongo": "^5.1.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "serve": "^14.2.6"
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -36,5 +44,8 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.10"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
