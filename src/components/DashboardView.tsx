@@ -121,25 +121,34 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
           </div>
         </div>
 
-        <div className="card p-6 border-gray-200">
-          <h3 className="text-xs font-medium text-gray-400 mb-4">Recent Activity</h3>
-          <div className="flex justify-between items-end h-[88px]">
-            <div>
-              <p className="text-xs text-blue-500 font-medium mb-1">Last 24h</p>
-              <h4 className="text-xl font-bold text-gray-900">
-                {feedbacks.filter(f => (new Date().getTime() - new Date(f.created_at).getTime()) < 86400000).length}
-              </h4>
-            </div>
-            <div>
-              <p className="text-xs text-red-500 font-medium mb-1">Last 7 Days</p>
-              <h4 className="text-xl font-bold text-gray-900">
-                {feedbacks.filter(f => (new Date().getTime() - new Date(f.created_at).getTime()) < 604800000).length}
-              </h4>
-            </div>
-            <div>
-              <p className="text-xs text-gray-800 font-medium mb-1">Last 30 Days</p>
-              <h4 className="text-xl font-bold text-gray-900">{total}</h4>
-            </div>
+        <div className="card border-gray-200 flex flex-col h-[200px]">
+          <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10 rounded-t-xl">
+            <h3 className="text-xs font-semibold text-gray-800 uppercase tracking-wider">Recent Reviews</h3>
+            <span className="text-xs font-medium text-blue-500">{total} Total</span>
+          </div>
+          <div className="p-0 overflow-y-auto flex-1">
+            {feedbacks.slice(0, 10).map((f) => (
+              <div key={f.id} className="p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="text-sm font-semibold text-gray-900 truncate max-w-[150px]" title={f.target || 'General'}>
+                    {f.target || 'General Review'}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    <span className="text-xs font-bold text-gray-700">{f.rating.toFixed(1)}</span>
+                  </div>
+                </div>
+                {f.comment && (
+                  <p className="text-xs text-gray-500 line-clamp-2 mt-1 italic">"{f.comment}"</p>
+                )}
+                <div className="text-[10px] text-gray-400 mt-2">
+                  {new Date(f.created_at).toLocaleDateString()}
+                </div>
+              </div>
+            ))}
+            {feedbacks.length === 0 && (
+              <div className="p-4 text-center text-sm text-gray-400 mt-4">No reviews yet</div>
+            )}
           </div>
         </div>
       </div>

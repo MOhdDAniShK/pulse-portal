@@ -29,6 +29,8 @@ export function MoodCards() {
     speed: null,
     usability: null,
   });
+  const [target, setTarget] = useState('');
+  const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState(false);
 
@@ -37,7 +39,7 @@ export function MoodCards() {
   };
 
   const handleSubmit = async (event: React.MouseEvent) => {
-    if (isSubmitting || !ratings.design || !ratings.speed || !ratings.usability) return;
+    if (isSubmitting || !ratings.design || !ratings.speed || !ratings.usability || !target.trim()) return;
     setIsSubmitting(true);
     
     const rect = (event.target as HTMLElement).getBoundingClientRect();
@@ -55,6 +57,8 @@ export function MoodCards() {
 
     try {
       await api.insertFeedback({
+        target: target.trim(),
+        comment: comment.trim(),
         rating_design: ratings.design,
         rating_speed: ratings.speed,
         rating_usability: ratings.usability,
@@ -62,6 +66,8 @@ export function MoodCards() {
       });
       
       setRatings({ design: null, speed: null, usability: null });
+      setTarget('');
+      setComment('');
       setSuccessMsg(true);
       setTimeout(() => setSuccessMsg(false), 3000);
     } catch (err) {
@@ -71,16 +77,27 @@ export function MoodCards() {
     }
   };
 
-  const isComplete = ratings.design && ratings.speed && ratings.usability;
+  const isComplete = ratings.design && ratings.speed && ratings.usability && target.trim().length > 0;
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-8 bg-white border border-gray-100 rounded-xl shadow-sm mt-8">
+    <div className="w-full max-w-3xl mx-auto p-8 bg-white border border-gray-100 rounded-xl shadow-sm mt-8 mb-16">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Submit Your Feedback</h2>
-        <p className="text-sm text-gray-500 mt-1">Please rate your experience across the following categories.</p>
+        <h2 className="text-2xl font-bold text-gray-900">Submit Your Review</h2>
+        <p className="text-sm text-gray-500 mt-1">Please specify what you are reviewing and rate your experience.</p>
       </div>
 
       <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700">What are you reviewing? *</label>
+          <input 
+            type="text" 
+            value={target}
+            onChange={(e) => setTarget(e.target.value)}
+            placeholder="e.g., New Homepage, Dashboard Feature, Checkout Process"
+            className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#5570F1] focus:border-transparent outline-none transition-all"
+          />
+        </div>
+
         {CATEGORIES.map((category, catIndex) => (
           <motion.div 
             key={category.id}
@@ -89,7 +106,7 @@ export function MoodCards() {
             transition={{ delay: catIndex * 0.1 }}
             className="p-6 bg-gray-50 rounded-xl border border-gray-100"
           >
-            <h3 className="text-gray-900 font-semibold mb-4 text-center">{category.label}</h3>
+            <h3 className="text-gray-900 font-semibold mb-4 text-center">{category.label} *</h3>
             <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
               {MOODS.map((mood) => {
                 const isSelected = ratings[category.id] === mood.value;
@@ -118,6 +135,17 @@ export function MoodCards() {
           </motion.div>
         ))}
 
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700">Additional Comments (Optional)</label>
+          <textarea 
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Tell us more about your experience..."
+            rows={4}
+            className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#5570F1] focus:border-transparent outline-none transition-all resize-none"
+          />
+        </div>
+
         <div className="flex flex-col items-center mt-4">
           <motion.button
             initial={{ opacity: 0, y: 20 }}
@@ -130,7 +158,7 @@ export function MoodCards() {
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
+            {isSubmitting ? 'Submitting...' : 'Submit Review'}
           </motion.button>
           
           {successMsg && (
@@ -139,7 +167,7 @@ export function MoodCards() {
               animate={{ opacity: 1, y: 0 }}
               className="text-green-600 font-medium mt-4"
             >
-              Feedback submitted successfully! Thank you.
+              Review submitted successfully! Thank you.
             </motion.p>
           )}
         </div>

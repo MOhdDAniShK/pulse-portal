@@ -2,6 +2,8 @@ import { supabase } from './supabase';
 
 export type Feedback = {
   id: string;
+  target: string;
+  comment?: string;
   rating_design: number;
   rating_speed: number;
   rating_usability: number;
