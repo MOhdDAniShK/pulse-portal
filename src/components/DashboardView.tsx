@@ -7,21 +7,6 @@ interface DashboardViewProps {
   averageRating: number | null;
 }
 
-const mockChartData = [
-  { name: 'Jan', total: 60 },
-  { name: 'Feb', total: 55 },
-  { name: 'Mar', total: 52 },
-  { name: 'Apr', total: 60 },
-  { name: 'May', total: 85 },
-  { name: 'Jun', total: 92 },
-  { name: 'Jul', total: 94 },
-  { name: 'Aug', total: 83 },
-  { name: 'Sep', total: 85 },
-  { name: 'Oct', total: 63 },
-  { name: 'Nov', total: 96 },
-  { name: 'Dec', total: 77 },
-];
-
 export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) {
   const total = feedbacks.length;
   
@@ -33,6 +18,13 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
   const positiveCount = feedbacks.filter(f => f.rating >= 4).length;
   const neutralCount = feedbacks.filter(f => f.rating === 3).length;
   const negativeCount = feedbacks.filter(f => f.rating < 3).length;
+
+  // Generate dynamic chart data based on feedback timestamps
+  const chartData = Array.from({ length: 12 }, (_, i) => {
+    const month = new Date(0, i).toLocaleString('en', { month: 'short' });
+    const count = feedbacks.filter(f => new Date(f.created_at).getMonth() === i).length;
+    return { name: month, total: count };
+  });
 
   const MetricCard = ({ icon: Icon, title, value, change, isPositive, iconColor }: any) => (
     <div className="card p-5 flex flex-col justify-between h-32">
@@ -56,13 +48,13 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
     <div className="p-8 max-w-[1600px] mx-auto space-y-6">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Hi Kipruto, Welcome back!</h1>
-        <p className="text-sm text-gray-500 mt-1">This is your feedback overview this year.</p>
+        <p className="text-sm text-gray-500 mt-1">This is your overview for this year.</p>
       </div>
 
       {/* Row 1: 5 Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <MetricCard 
-          icon={Users} title="Total Feedbacks" value={total.toLocaleString()} 
+          icon={Users} title="Total Ratings" value={total.toLocaleString()} 
           change="5.2%" isPositive={true} iconColor="bg-[#5570F1]"
         />
         <MetricCard 
@@ -130,15 +122,19 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
         </div>
 
         <div className="card p-6 border-gray-200">
-          <h3 className="text-xs font-medium text-gray-400 mb-4">Recent Feedback Activity</h3>
+          <h3 className="text-xs font-medium text-gray-400 mb-4">Recent Activity</h3>
           <div className="flex justify-between items-end h-[88px]">
             <div>
               <p className="text-xs text-blue-500 font-medium mb-1">Last 24h</p>
-              <h4 className="text-xl font-bold text-gray-900">12</h4>
+              <h4 className="text-xl font-bold text-gray-900">
+                {feedbacks.filter(f => (new Date().getTime() - new Date(f.created_at).getTime()) < 86400000).length}
+              </h4>
             </div>
             <div>
               <p className="text-xs text-red-500 font-medium mb-1">Last 7 Days</p>
-              <h4 className="text-xl font-bold text-gray-900">84</h4>
+              <h4 className="text-xl font-bold text-gray-900">
+                {feedbacks.filter(f => (new Date().getTime() - new Date(f.created_at).getTime()) < 604800000).length}
+              </h4>
             </div>
             <div>
               <p className="text-xs text-gray-800 font-medium mb-1">Last 30 Days</p>
@@ -154,16 +150,15 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
         <div className="card p-6 lg:col-span-2 flex flex-col">
           <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
             <div className="flex gap-6">
-              <button className="text-sm font-semibold text-blue-500 border-b-2 border-blue-500 pb-4 -mb-[18px]">Feedback Overview</button>
-              <button className="text-sm font-medium text-gray-400 pb-4 -mb-[18px]">Category Overview</button>
+              <button className="text-sm font-semibold text-blue-500 border-b-2 border-blue-500 pb-4 -mb-[18px]">Overview</button>
             </div>
             <select className="text-xs border border-gray-200 rounded p-1 px-2 text-gray-600 bg-white">
-              <option>2026</option>
+              <option>{new Date().getFullYear()}</option>
             </select>
           </div>
           <div className="flex-1 w-full min-h-0">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={mockChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E5EA" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#8E8E93' }} dy={10} />
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#8E8E93' }} />
@@ -177,7 +172,7 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
         {/* Side Stats */}
         <div className="flex flex-col gap-6">
           <div className="card p-6 flex-1 flex flex-col justify-center">
-            <h3 className="text-xs font-medium text-gray-400 mb-6">Feedback this Month</h3>
+            <h3 className="text-xs font-medium text-gray-400 mb-6">Ratings this Month</h3>
             <div className="flex items-center">
               <div className="flex-1 space-y-4 pr-6 border-r border-gray-100">
                 <div className="flex justify-between items-center text-xs">
@@ -195,7 +190,7 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
               </div>
               <div className="w-32 text-center pl-6">
                 <h2 className="text-4xl font-bold text-gray-900 mb-1">{total}</h2>
-                <p className="text-[10px] text-gray-500 font-medium">Total feedbacks</p>
+                <p className="text-[10px] text-gray-500 font-medium">Total ratings</p>
               </div>
             </div>
           </div>
@@ -214,7 +209,7 @@ export function DashboardView({ feedbacks, averageRating }: DashboardViewProps) 
                 </div>
               </div>
               <div className="w-32 text-center pl-6">
-                <h2 className="text-3xl font-bold text-gray-900 mb-1">{((positiveCount / (total || 1)) * 100).toFixed(0)}%</h2>
+                <h2 className="text-3xl font-bold text-gray-900 mb-1">{total ? ((positiveCount / total) * 100).toFixed(0) : 0}%</h2>
                 <p className="text-[10px] text-gray-500 font-medium">Satisfaction Rate</p>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { io } from 'socket.io-client';
+import { supabase } from './supabase';
 
 export type Feedback = {
   id: string;
@@ -9,39 +9,52 @@ export type Feedback = {
   created_at: string;
 };
 
-// Use the local server or deployed URL
-const SERVER_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-
-const socket = io(SERVER_URL);
+// Ensure API fails gracefully if Supabase is not configured
+const isConfigured = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_URL !== 'https://placeholder-project.supabase.co';
 
 export const api = {
   async fetchFeedbacks(): Promise<Feedback[]> {
-    try {
-      const response = await fetch(`${SERVER_URL}/api/feedback`);
-      if (!response.ok) throw new Error('Failed to fetch');
-      return await response.json();
-    } catch (error) {
-      console.warn('Failed to fetch from server, falling back to empty array.', error);
+    if (!isConfigured) {
+      console.warn('Supabase is not configured. Please add VITE_SUPABASE_URL to your .env.local file.');
       return [];
     }
+
+    const { data, error } = await supabase
+      .from('feedback')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    
+    if (error) throw error;
+    return data as Feedback[];
   },
 
   async insertFeedback(feedback: Omit<Feedback, 'id' | 'created_at'>): Promise<void> {
-    return new Promise((resolve) => {
-      socket.emit('submit_feedback', feedback);
-      resolve();
-    });
+    if (!isConfigured) {
+      alert('Database connection missing! Add VITE_SUPABASE_URL to .env.local');
+      return;
+    }
+
+    const { error } = await supabase.from('feedback').insert([feedback]);
+    if (error) throw error;
   },
 
   subscribeToFeedbacks(callback: (feedback: Feedback) => void): () => void {
-    const listener = (newFeedback: Feedback) => {
-      callback(newFeedback);
-    };
-    
-    socket.on('new_feedback', listener);
+    if (!isConfigured) return () => {};
+
+    const sub = supabase
+      .channel('public:feedback')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'feedback' },
+        (payload) => {
+          callback(payload.new as Feedback);
+        }
+      )
+      .subscribe();
     
     return () => {
-      socket.off('new_feedback', listener);
+      supabase.removeChannel(sub);
     };
   }
 };
