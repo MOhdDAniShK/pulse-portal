@@ -12,9 +12,9 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const DIST = join(__dirname, 'dist');
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017';
+const MONGO_URI = (process.env.MONGO_URI || 'mongodb://localhost:27017').trim();
 const DB_NAME = process.env.DB_NAME || 'pulse_portal';
-const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+const BASE_URL = (process.env.BASE_URL || `http://localhost:${PORT}`).trim().replace(/\/+$/, '');
 
 const app = express();
 app.use(express.json());
@@ -518,6 +518,7 @@ function setupPassport() {
       } catch (err) { done(err, null); }
     }));
     console.log('✅ Google OAuth configured');
+    console.log(`📍 OAuth callback URL: ${BASE_URL}/auth/google/callback`);
   } else {
     console.log('⚠️  Google OAuth not configured (missing GOOGLE_CLIENT_ID/SECRET)');
   }
