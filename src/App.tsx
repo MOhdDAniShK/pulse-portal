@@ -12,6 +12,19 @@ import { LoginPage } from './components/LoginPage';
 
 const CATEGORIES: Category[] = ['All', 'Products', 'Services', 'Ideas', 'Projects', 'Tools', 'Players'];
 
+// Reusable card image with graceful fallback
+function CardImage({ src, name, className = 'w-20 h-20' }: { src: string; name: string; className?: string }) {
+  const [failed, setFailed] = useState(false);
+  if (!src || failed) {
+    return (
+      <div className={`${className} rounded-2xl bg-gradient-to-br from-[#00BFA6]/20 to-[#00897B]/30 flex items-center justify-center`}>
+        <span className="text-3xl font-black text-[#00BFA6]">{name[0]?.toUpperCase()}</span>
+      </div>
+    );
+  }
+  return <img src={src} alt={name} className={`${className} object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300`} loading="lazy" onError={() => setFailed(true)} />;
+}
+
 const catColor: Record<string, string> = {
   Products: 'bg-blue-50 text-blue-600', Services: 'bg-emerald-50 text-emerald-600',
   Ideas: 'bg-amber-50 text-amber-600', Projects: 'bg-rose-50 text-rose-600', Tools: 'bg-violet-50 text-violet-600',
@@ -266,12 +279,8 @@ function App() {
                             onClick={() => setSelectedItemId(item._id)}
                             className="card p-0 overflow-hidden cursor-pointer group hover:shadow-lg hover:-translate-y-0.5 transition-all">
                             {/* Card Image */}
-                            <div className="h-36 bg-gradient-to-br from-[#F4F5F7] to-[#E8ECF0] flex items-center justify-center relative group-hover:from-[#E8ECF0] group-hover:to-[#DDE0E4] transition-all overflow-hidden">
-                              {item.image ? (
-                                <img src={item.image} alt={item.name} className="w-16 h-16 object-contain drop-shadow-md group-hover:scale-110 transition-transform duration-300" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                              ) : (
-                                <div className="w-16 h-16 rounded-2xl bg-white/60 flex items-center justify-center text-3xl font-bold text-[#00BFA6]">{item.name[0]}</div>
-                              )}
+                            <div className="h-40 bg-gradient-to-br from-[#F4F5F7] to-[#E8ECF0] flex items-center justify-center relative group-hover:from-[#E8ECF0] group-hover:to-[#DDE0E4] transition-all overflow-hidden">
+                              <CardImage src={item.image} name={item.name} />
                               <span className={`absolute top-2.5 left-2.5 text-[9px] font-bold px-2 py-0.5 rounded ${catColor[item.category] || 'bg-gray-100 text-gray-500'}`}>{item.category}</span>
                               {item.link && <ExternalLink className="w-3 h-3 text-[#B0B7C3] absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition" />}
                             </div>
@@ -320,7 +329,7 @@ function App() {
 
       <AnimatePresence>
         {showSubmit && <SubmitForm onClose={() => setShowSubmit(false)} onSubmitted={loadItems} />}
-        {showProfile && <UserProfilePanel onClose={() => setShowProfile(false)} onNavigate={id => { setSelectedItemId(id); setPage('listings'); }} />}
+        {showProfile && <UserProfilePanel onClose={() => setShowProfile(false)} onNavigate={id => { setSelectedItemId(id); setPage('listings'); }} authUser={authUser} />}
         {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
       </AnimatePresence>
     </div>

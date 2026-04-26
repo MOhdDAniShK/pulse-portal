@@ -14,12 +14,14 @@ export function SubmitForm({ onClose, onSubmitted }: { onClose: () => void; onSu
   const [category, setCategory] = useState<Exclude<Category, 'All'>>('Products');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const isValid = name.trim() && tagline.trim() && description.trim();
 
   const handleSubmit = async () => {
     if (!isValid || submitting) return;
     try {
       setSubmitting(true);
+      setError('');
       await submitItem({
         name: name.trim(),
         tagline: tagline.trim(),
@@ -33,6 +35,7 @@ export function SubmitForm({ onClose, onSubmitted }: { onClose: () => void; onSu
       setTimeout(onClose, 1200);
     } catch (err) {
       console.error('Failed to submit:', err);
+      setError('Failed to submit. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -76,6 +79,7 @@ export function SubmitForm({ onClose, onSubmitted }: { onClose: () => void; onSu
               <input type="url" value={link} onChange={e => setLink(e.target.value)} placeholder="https://..." className="w-full px-3 py-2 text-xs" /></div>
             <div><label className="text-[10px] font-bold text-[#B0B7C3] uppercase tracking-wider mb-1.5 block">Category *</label>
               <div className="flex flex-wrap gap-1.5">{CATEGORIES.map(c => (<button key={c} onClick={() => setCategory(c)} className={`cat-pill ${category === c ? 'active' : ''}`}>{c}</button>))}</div></div>
+            {error && <p className="text-xs text-red-500 font-bold bg-red-50 px-3 py-2 rounded-lg">{error}</p>}
             <button onClick={handleSubmit} disabled={!isValid || submitting}
               className="w-full py-2.5 bg-[#00BFA6] text-white font-bold text-xs rounded-lg hover:bg-[#00A693] disabled:opacity-30 disabled:cursor-not-allowed transition cursor-pointer">
               {submitting ? 'Submitting...' : 'Submit →'}

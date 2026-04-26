@@ -1,17 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { X, Star, ChevronUp, Send as SendIcon, Camera, Check } from 'lucide-react';
-import { fetchUserActivity, SESSION_ID, getUserProfile, setUserProfile, getAvgRating, type Item } from '../lib/store';
+import { X, Star, ChevronUp, Send as SendIcon, Check } from 'lucide-react';
+import { fetchUserActivity, SESSION_ID, getAvgRating, type Item, type AuthUser } from '../lib/store';
 
-const AVATARS = ['⚡','🦁','🐱','🐶','🦊','🐸','🐼','🐨','🐯','🦄','🔥','💎','🎮','🎨','🎵','🚀','🌊','⚽','🏀','🎯','👨‍💻','👩‍💻','🧑‍🎨','🦸'];
-
-export function UserProfilePanel({ onClose, onNavigate }: { onClose: () => void; onNavigate: (id: string) => void }) {
-  const [profile, setProfile] = useState(getUserProfile());
-  const [name, setName] = useState(profile.name || '');
-  const [bio, setBio] = useState(profile.bio || '');
-  const [avatar, setAvatar] = useState(profile.avatar || '⚡');
-  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
-  const [saved, setSaved] = useState(false);
+export function UserProfilePanel({ onClose, onNavigate, authUser }: { onClose: () => void; onNavigate: (id: string) => void; authUser?: AuthUser | null }) {
   const [activity, setActivity] = useState<{ submitted: Item[]; upvoted: Item[]; rated: Item[] }>({ submitted: [], upvoted: [], rated: [] });
   const [loading, setLoading] = useState(true);
 
@@ -22,13 +14,9 @@ export function UserProfilePanel({ onClose, onNavigate }: { onClose: () => void;
       .finally(() => setLoading(false));
   }, []);
 
-  const handleSave = () => {
-    const updated = { name: name.trim(), bio: bio.trim(), avatar };
-    setUserProfile(updated);
-    setProfile(updated);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
+  const displayName = authUser?.name || 'Anonymous User';
+  const displayEmail = authUser?.email || '';
+  const displayAvatar = authUser?.avatar || '';
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -41,58 +29,29 @@ export function UserProfilePanel({ onClose, onNavigate }: { onClose: () => void;
           <button onClick={onClose} className="p-1 hover:bg-[#F4F5F7] rounded-lg cursor-pointer"><X className="w-4 h-4 text-[#B0B7C3]" /></button>
         </div>
         <div className="p-4 space-y-4">
-          {/* Avatar + Name Card */}
+          {/* Profile Card */}
           <div className="card p-4">
             <div className="flex items-center gap-4 mb-4">
               <div className="relative">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#F2994A] to-[#EB5757] flex items-center justify-center text-3xl shadow-lg cursor-pointer hover:scale-105 transition-transform"
-                  onClick={() => setShowAvatarPicker(!showAvatarPicker)}>
-                  {avatar}
+                {displayAvatar ? (
+                  <img src={displayAvatar} alt={displayName} className="w-16 h-16 rounded-2xl object-cover shadow-lg" referrerPolicy="no-referrer" />
+                ) : (
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00BFA6] to-[#00897B] flex items-center justify-center text-2xl font-bold text-white shadow-lg">
+                    {displayName[0]?.toUpperCase() || '?'}
+                  </div>
+                )}
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#34A853] flex items-center justify-center shadow-md">
+                  <Check className="w-3 h-3 text-white" />
                 </div>
-                <button onClick={() => setShowAvatarPicker(!showAvatarPicker)}
-                  className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#00BFA6] flex items-center justify-center shadow-md cursor-pointer hover:bg-[#00A693] transition">
-                  <Camera className="w-3 h-3 text-white" />
-                </button>
               </div>
               <div className="flex-1">
-                <div className="text-base font-extrabold text-[#1E1E2D]">{name || 'Anonymous User'}</div>
-                <div className="text-[10px] text-[#B0B7C3]">Session: {SESSION_ID.slice(0, 8)}...</div>
+                <div className="text-base font-extrabold text-[#1E1E2D]">{displayName}</div>
+                {displayEmail && <div className="text-[10px] text-[#7B8190] mt-0.5">{displayEmail}</div>}
+                <div className="flex items-center gap-1 mt-1">
+                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#00BFA6]/10 text-[#00BFA6]">🔵 Google Account</span>
+                </div>
               </div>
             </div>
-
-            {/* Avatar Picker */}
-            {showAvatarPicker && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
-                className="mb-4 p-3 bg-[#F4F5F7] rounded-xl overflow-hidden">
-                <p className="text-[9px] font-bold text-[#B0B7C3] uppercase tracking-wider mb-2">Choose Avatar</p>
-                <div className="grid grid-cols-8 gap-1.5">
-                  {AVATARS.map(a => (
-                    <button key={a} onClick={() => { setAvatar(a); setShowAvatarPicker(false); }}
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center text-lg cursor-pointer transition hover:scale-110 ${avatar === a ? 'bg-[#00BFA6] shadow-md ring-2 ring-[#00BFA6]/30' : 'bg-white hover:bg-white/80'}`}>
-                      {a}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-
-            {/* Name */}
-            <div className="mb-3">
-              <label className="text-[9px] font-bold text-[#B0B7C3] uppercase tracking-wider mb-1.5 block">Display Name</label>
-              <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" className="w-full px-3 py-2 text-xs" />
-            </div>
-
-            {/* Bio */}
-            <div className="mb-3">
-              <label className="text-[9px] font-bold text-[#B0B7C3] uppercase tracking-wider mb-1.5 block">Bio</label>
-              <textarea value={bio} onChange={e => setBio(e.target.value)} placeholder="Tell us about yourself..." rows={2} className="w-full px-3 py-2 text-xs" maxLength={120} />
-              <p className="text-[9px] text-[#B0B7C3] text-right mt-0.5">{bio.length}/120</p>
-            </div>
-
-            <button onClick={handleSave} disabled={!name.trim()}
-              className="w-full py-2.5 bg-[#00BFA6] text-white text-xs font-bold rounded-lg disabled:opacity-30 transition cursor-pointer hover:bg-[#00A693] flex items-center justify-center gap-2">
-              {saved ? <><Check className="w-3.5 h-3.5" /> Saved!</> : 'Save Profile'}
-            </button>
           </div>
 
           {loading ? (

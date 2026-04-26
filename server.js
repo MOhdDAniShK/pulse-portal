@@ -102,7 +102,7 @@ async function seedDatabase() {
   const items = [
     {
       name: 'ChatGPT', tagline: 'AI assistant for writing, coding, and analysis',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/512px-ChatGPT_logo.svg.png',
+      image: 'https://www.google.com/s2/favicons?domain=chat.openai.com&sz=128',
       description: 'ChatGPT by OpenAI is an advanced AI assistant that can help with writing, coding, research, analysis, and creative tasks.',
       link: 'https://chat.openai.com', category: 'Products', upvotes: 284, upvotedBy: ['a','b','c'],
       ratings: [r('Alex', 5, 'Revolutionary tool for productivity', 1), r('Sam', 4, 'Great but sometimes hallucinates', 2), r('Morgan', 5, 'Use it daily for coding help', 3), r('Quinn', 4, 'Impressive capabilities', 4), r('Dev', 5, 'Best AI tool available', 5), r('Pat', 3, 'Good but needs fact-checking', 6), r('Taylor', 5, 'Changed how I work', 2), r('Riley', 4, 'Very helpful for brainstorming', 3)],
@@ -110,7 +110,7 @@ async function seedDatabase() {
     },
     {
       name: 'Notion', tagline: 'All-in-one workspace for notes, docs, and projects',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png',
+      image: 'https://www.google.com/s2/favicons?domain=notion.so&sz=128',
       description: 'Notion combines notes, docs, wikis, and project management into one connected workspace.',
       link: 'https://notion.so', category: 'Products', upvotes: 198, upvotedBy: ['d','e'],
       ratings: [r('Sam', 5, 'Perfect for team documentation', 2), r('Jordan', 4, 'Great but can be slow', 3), r('Morgan', 5, 'Replaced 5 other tools for me', 1), r('Chris', 4, 'Love the flexibility', 5), r('Quinn', 3, 'Learning curve is steep', 7), r('Taylor', 5, 'Best workspace tool', 4)],
@@ -118,7 +118,7 @@ async function seedDatabase() {
     },
     {
       name: 'Figma', tagline: 'Collaborative design tool for teams',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg',
+      image: 'https://www.google.com/s2/favicons?domain=figma.com&sz=128',
       description: 'Figma is a cloud-based design platform for building user interfaces, prototyping, and collaborating in real-time.',
       link: 'https://figma.com', category: 'Tools', upvotes: 176, upvotedBy: ['f','g'],
       ratings: [r('Alex', 5, 'Industry standard for good reason', 2), r('Dev', 5, 'Collaboration features are unmatched', 1), r('Pat', 4, 'Much better than Sketch', 4), r('Casey', 5, 'Dev mode saves hours', 3), r('Riley', 4, 'Auto-layout is powerful', 6)],
@@ -126,7 +126,7 @@ async function seedDatabase() {
     },
     {
       name: 'Stripe', tagline: 'Payment infrastructure for the internet',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg',
+      image: 'https://www.google.com/s2/favicons?domain=stripe.com&sz=128',
       description: 'Stripe provides APIs and tools for online payment processing. Used by millions of businesses.',
       link: 'https://stripe.com', category: 'Services', upvotes: 165, upvotedBy: ['h'],
       ratings: [r('Jordan', 5, 'Best payment API by far', 3), r('Dev', 5, 'Documentation is excellent', 1), r('Quinn', 4, 'Easy to integrate', 5), r('Taylor', 5, 'Checkout flow is seamless', 2), r('Avery', 4, 'Dashboard could be better', 7)],
@@ -134,7 +134,7 @@ async function seedDatabase() {
     },
     {
       name: 'Linear', tagline: 'Issue tracking built for speed',
-      image: 'https://asset.brandfetch.io/iduDa181eM/idYmHGSOlR.png',
+      image: 'https://www.google.com/s2/favicons?domain=linear.app&sz=128',
       description: 'Linear is a modern project management tool designed for high-performance teams.',
       link: 'https://linear.app', category: 'Tools', upvotes: 142, upvotedBy: ['i'],
       ratings: [r('Alex', 5, 'Fastest project management tool ever', 1), r('Sam', 5, 'Jira killer', 2), r('Morgan', 4, 'Love the keyboard shortcuts', 4), r('Dev', 5, 'Beautiful and fast', 3)],
@@ -142,7 +142,7 @@ async function seedDatabase() {
     },
     {
       name: 'Vercel', tagline: 'Frontend cloud platform for developers',
-      image: 'https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png',
+      image: 'https://www.google.com/s2/favicons?domain=vercel.com&sz=128',
       description: 'Vercel provides the developer experience and infrastructure to build, scale, and secure web applications.',
       link: 'https://vercel.com', category: 'Services', upvotes: 138, upvotedBy: ['j'],
       ratings: [r('Dev', 5, 'Deploy in seconds', 1), r('Jordan', 4, 'Great DX but pricey at scale', 3), r('Taylor', 5, 'Preview deployments are game-changing', 2), r('Casey', 4, 'Love the edge functions', 5)],
@@ -150,7 +150,7 @@ async function seedDatabase() {
     },
     {
       name: 'Spotify', tagline: 'Music streaming for everyone',
-      image: 'https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png',
+      image: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=128',
       description: 'Spotify gives you access to millions of songs, podcasts, and audiobooks.',
       link: 'https://spotify.com', category: 'Products', upvotes: 156, upvotedBy: ['k','l'],
       ratings: [r('Pat', 5, 'Best music app hands down', 1), r('Riley', 4, 'Discover Weekly is magic', 2), r('Avery', 5, 'Podcast integration is great', 4), r('Skyler', 3, 'Free tier has too many ads', 3), r('Jamie', 4, 'Collaborative playlists are fun', 6)],
@@ -158,7 +158,7 @@ async function seedDatabase() {
     },
     {
       name: 'Tailwind CSS', tagline: 'Utility-first CSS framework',
-      image: 'https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg',
+      image: 'https://www.google.com/s2/favicons?domain=tailwindcss.com&sz=128',
       description: 'Tailwind CSS is a utility-first CSS framework that lets you build modern designs directly in your markup.',
       link: 'https://tailwindcss.com', category: 'Tools', upvotes: 134, upvotedBy: ['m'],
       ratings: [r('Dev', 5, 'Changed how I write CSS forever', 1), r('Alex', 5, 'So productive once you learn it', 2), r('Casey', 4, 'HTML can get verbose', 4), r('Quinn', 5, 'v4 is amazing', 3)],
@@ -166,7 +166,7 @@ async function seedDatabase() {
     },
     {
       name: 'GitHub Copilot', tagline: 'AI pair programmer for your editor',
-      image: 'https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png',
+      image: 'https://www.google.com/s2/favicons?domain=github.com&sz=128',
       description: 'GitHub Copilot uses AI to suggest code completions, entire functions, and helps you write code faster.',
       link: 'https://github.com/features/copilot', category: 'Products', upvotes: 167, upvotedBy: ['n'],
       ratings: [r('Dev', 5, 'Like having a senior dev next to you', 1), r('Jordan', 4, 'Great for boilerplate code', 2), r('Sam', 4, 'Sometimes suggests wrong patterns', 3), r('Taylor', 5, 'Saves me hours every day', 4), r('Morgan', 3, 'Tab-completion can be distracting', 6)],
@@ -174,7 +174,7 @@ async function seedDatabase() {
     },
     {
       name: 'Supabase', tagline: 'Open source Firebase alternative',
-      image: 'https://seeklogo.com/images/S/supabase-logo-DCC676FFE2-seeklogo.com.png',
+      image: 'https://www.google.com/s2/favicons?domain=supabase.com&sz=128',
       description: 'Supabase provides a Postgres database, authentication, instant APIs, edge functions, and storage.',
       link: 'https://supabase.com', category: 'Services', upvotes: 119, upvotedBy: [],
       ratings: [r('Dev', 5, 'Postgres + auth + storage in one', 1), r('Alex', 4, 'Great for MVPs', 3), r('Quinn', 5, 'Edge functions are powerful', 2), r('Riley', 4, 'Dashboard is clean', 5)],
@@ -182,7 +182,7 @@ async function seedDatabase() {
     },
     {
       name: 'Canva', tagline: 'Design anything, publish anywhere',
-      image: 'https://static.canva.com/web/images/12487a1e0770d29351bd4ce4f87ec8fe.svg',
+      image: 'https://www.google.com/s2/favicons?domain=canva.com&sz=128',
       description: 'Canva makes graphic design accessible to everyone.',
       link: 'https://canva.com', category: 'Products', upvotes: 143, upvotedBy: ['o'],
       ratings: [r('Pat', 5, 'Perfect for non-designers', 1), r('Jamie', 4, 'Templates save so much time', 2), r('Avery', 5, 'Magic resize is brilliant', 3), r('Skyler', 4, 'Free tier is very generous', 5)],
@@ -190,7 +190,7 @@ async function seedDatabase() {
     },
     {
       name: 'Midjourney', tagline: 'AI-powered image generation',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png',
+      image: 'https://www.google.com/s2/favicons?domain=midjourney.com&sz=128',
       description: 'Midjourney creates stunning AI-generated artwork from text prompts.',
       link: 'https://midjourney.com', category: 'Products', upvotes: 131, upvotedBy: [],
       ratings: [r('Alex', 5, 'Art quality is incredible', 1), r('Morgan', 4, 'Great for concept art', 2), r('Casey', 5, 'v6 is photorealistic', 3), r('Riley', 3, 'Wish it had a proper app', 5)],
@@ -198,7 +198,7 @@ async function seedDatabase() {
     },
     {
       name: 'Railway', tagline: 'Infrastructure made simple',
-      image: 'https://railway.app/brand/logo-light.png',
+      image: 'https://www.google.com/s2/favicons?domain=railway.app&sz=128',
       description: 'Railway lets you deploy apps, databases, and cron jobs with zero DevOps.',
       link: 'https://railway.app', category: 'Services', upvotes: 98, upvotedBy: [],
       ratings: [r('Dev', 5, 'Easiest deployment platform', 1), r('Jordan', 4, 'Great for side projects', 3), r('Taylor', 5, 'Replaced Heroku for me', 2)],
@@ -206,7 +206,7 @@ async function seedDatabase() {
     },
     {
       name: 'Arc Browser', tagline: 'A browser built for the way we use the internet',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Arc_%28browser%29_logo.png',
+      image: 'https://www.google.com/s2/favicons?domain=arc.net&sz=128',
       description: 'Arc reimagines the web browser with spaces, profiles, easels, and a command bar.',
       link: 'https://arc.net', category: 'Products', upvotes: 112, upvotedBy: [],
       ratings: [r('Sam', 4, 'Beautiful but resource-heavy', 1), r('Quinn', 5, 'Spaces changed my workflow', 2), r('Pat', 4, 'Best browser design ever', 4), r('Casey', 3, 'Missing some extensions', 3)],
@@ -214,7 +214,7 @@ async function seedDatabase() {
     },
     {
       name: 'Obsidian', tagline: 'Private and flexible note-taking app',
-      image: 'https://obsidian.md/images/obsidian-logo-gradient.svg',
+      image: 'https://www.google.com/s2/favicons?domain=obsidian.md&sz=128',
       description: 'Obsidian is a powerful knowledge base that works on top of local Markdown files.',
       link: 'https://obsidian.md', category: 'Tools', upvotes: 108, upvotedBy: [],
       ratings: [r('Morgan', 5, 'Best note-taking app for power users', 1), r('Alex', 5, 'Plugin ecosystem is amazing', 2), r('Dev', 4, 'Local-first is a huge plus', 3), r('Riley', 4, 'Graph view is beautiful', 5)],
@@ -222,7 +222,7 @@ async function seedDatabase() {
     },
     {
       name: 'Framer', tagline: 'Ship sites with style, no code needed',
-      image: 'https://framerusercontent.com/images/3bLFJzhRxQwJOXMVt3G8yh2goHU.png',
+      image: 'https://www.google.com/s2/favicons?domain=framer.com&sz=128',
       description: 'Framer lets you design and publish stunning websites without writing code.',
       link: 'https://framer.com', category: 'Tools', upvotes: 95, upvotedBy: [],
       ratings: [r('Casey', 5, 'Best no-code website builder', 1), r('Pat', 4, 'Animations are so smooth', 3), r('Avery', 5, 'Replaced Webflow for me', 2)],
@@ -230,7 +230,7 @@ async function seedDatabase() {
     },
     {
       name: 'Loom', tagline: 'Record and share video messages',
-      image: 'https://asset.brandfetch.io/id_xHGOeBi/idOBRyBSIK.png',
+      image: 'https://www.google.com/s2/favicons?domain=loom.com&sz=128',
       description: 'Loom lets you record quick video messages to explain anything.',
       link: 'https://loom.com', category: 'Services', upvotes: 87, upvotedBy: [],
       ratings: [r('Taylor', 5, 'Replaced so many meetings', 1), r('Quinn', 4, 'AI summary saves time', 2), r('Sam', 4, 'Great for bug reports', 4)],
@@ -238,7 +238,7 @@ async function seedDatabase() {
     },
     {
       name: 'Excalidraw', tagline: 'Virtual whiteboard for sketching',
-      image: 'https://excalidraw.com/apple-touch-icon.png',
+      image: 'https://www.google.com/s2/favicons?domain=excalidraw.com&sz=128',
       description: 'Excalidraw is a simple, open-source virtual whiteboard for hand-drawn-like diagrams.',
       link: 'https://excalidraw.com', category: 'Tools', upvotes: 92, upvotedBy: [],
       ratings: [r('Dev', 5, 'Perfect for architecture diagrams', 1), r('Jordan', 5, 'Hand-drawn style is charming', 2), r('Alex', 4, 'Collaboration works great', 3)],
@@ -246,7 +246,7 @@ async function seedDatabase() {
     },
     {
       name: 'Cal.com', tagline: 'Open source scheduling infrastructure',
-      image: 'https://cal.com/android-chrome-256x256.png',
+      image: 'https://www.google.com/s2/favicons?domain=cal.com&sz=128',
       description: 'Cal.com is an open-source Calendly alternative for scheduling meetings.',
       link: 'https://cal.com', category: 'Projects', upvotes: 76, upvotedBy: [],
       ratings: [r('Quinn', 5, 'Best open-source scheduling tool', 1), r('Taylor', 4, 'Self-hosting is a huge plus', 3), r('Riley', 4, 'Customization is great', 2)],
@@ -254,7 +254,7 @@ async function seedDatabase() {
     },
     {
       name: 'Hacker News', tagline: 'Tech community news and discussion',
-      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Y_Combinator_logo.svg/512px-Y_Combinator_logo.svg.png',
+      image: 'https://www.google.com/s2/favicons?domain=news.ycombinator.com&sz=128',
       description: 'Hacker News is a social news website focusing on computer science and entrepreneurship.',
       link: 'https://news.ycombinator.com', category: 'Projects', upvotes: 104, upvotedBy: [],
       ratings: [r('Alex', 4, 'Best source for tech news', 1), r('Dev', 5, 'Comments are gold', 2), r('Sam', 3, 'Can be elitist sometimes', 4), r('Morgan', 4, 'Great for discovering startups', 3)],
@@ -263,42 +263,42 @@ async function seedDatabase() {
     // ── Arsenal Players ──
     {
       name: 'Bukayo Saka', tagline: 'Arsenal winger & England international',
-      image: '', description: 'Bukayo Saka is an English professional footballer who plays as a right winger for Arsenal and England national team. Known for his pace and dribbling.',
+      image: 'https://www.google.com/s2/favicons?domain=arsenal.com&sz=128', description: 'Bukayo Saka is an English professional footballer who plays as a right winger for Arsenal and England national team. Known for his pace and dribbling.',
       link: 'https://www.arsenal.com', category: 'Players', upvotes: 45, upvotedBy: [],
       ratings: [r('GoalKing', 2, 'Inconsistent finishing this season', 1), r('GunnerFan', 3, 'Good potential but overhyped', 2), r('ArsenalLegend', 2, 'Needs to step up in big games', 3), r('FootyWatch', 3, 'Decent but not world class yet', 4)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(2),
     },
     {
       name: 'Martin Ødegaard', tagline: 'Arsenal captain & creative midfielder',
-      image: '', description: 'Martin Ødegaard is a Norwegian footballer who plays as an attacking midfielder and captain for Arsenal and the Norway national team.',
+      image: 'https://www.google.com/s2/favicons?domain=arsenal.com&sz=128', description: 'Martin Ødegaard is a Norwegian footballer who plays as an attacking midfielder and captain for Arsenal and the Norway national team.',
       link: 'https://www.arsenal.com', category: 'Players', upvotes: 38, upvotedBy: [],
       ratings: [r('TacticsPro', 2, 'Disappeared in crucial matches', 1), r('NorwayFan', 3, 'Creative but fragile', 2), r('PremFanatic', 2, 'Injury-prone captain', 3), r('GoalKing', 2, 'Not consistent enough', 5)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(2),
     },
     {
       name: 'Declan Rice', tagline: 'Arsenal & England midfielder',
-      image: '', description: 'Declan Rice is an English footballer who plays as a defensive midfielder for Arsenal. Signed from West Ham for a club-record fee.',
+      image: 'https://www.google.com/s2/favicons?domain=arsenal.com&sz=128', description: 'Declan Rice is an English footballer who plays as a defensive midfielder for Arsenal. Signed from West Ham for a club-record fee.',
       link: 'https://www.arsenal.com', category: 'Players', upvotes: 42, upvotedBy: [],
       ratings: [r('MidfieldMaster', 3, 'Good but overpriced', 1), r('GunnerFan', 2, 'Not worth 100M', 2), r('FootyWatch', 3, 'Solid but unspectacular', 3), r('ArsenalLegend', 2, 'Expected more for that price', 4)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(3),
     },
     {
       name: 'William Saliba', tagline: 'Arsenal & France centre-back',
-      image: '', description: 'William Saliba is a French professional footballer who plays as a centre-back for Arsenal and the France national team.',
+      image: 'https://www.google.com/s2/favicons?domain=arsenal.com&sz=128', description: 'William Saliba is a French professional footballer who plays as a centre-back for Arsenal and the France national team.',
       link: 'https://www.arsenal.com', category: 'Players', upvotes: 35, upvotedBy: [],
       ratings: [r('DefenceFirst', 2, 'Makes too many errors', 1), r('PremFanatic', 3, 'Decent but overhyped', 2), r('TacticsPro', 2, 'Positioning needs work', 3), r('GoalKing', 2, 'Not top 5 CB material', 5)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(3),
     },
     {
       name: 'Kai Havertz', tagline: 'Arsenal forward from Germany',
-      image: '', description: 'Kai Havertz is a German footballer who plays as a forward for Arsenal. Versatile attacker who can play multiple positions.',
+      image: 'https://www.google.com/s2/favicons?domain=arsenal.com&sz=128', description: 'Kai Havertz is a German footballer who plays as a forward for Arsenal. Versatile attacker who can play multiple positions.',
       link: 'https://www.arsenal.com', category: 'Players', upvotes: 28, upvotedBy: [],
       ratings: [r('GunnerFan', 1, 'No end product at all', 1), r('FootyWatch', 2, 'Wastes too many chances', 2), r('ArsenalLegend', 2, 'Frustrating to watch', 3), r('MidfieldMaster', 2, 'Not a striker', 4)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(1),
     },
     {
       name: 'Gabriel Jesus', tagline: 'Arsenal & Brazil striker',
-      image: '', description: 'Gabriel Jesus is a Brazilian footballer who plays as a forward for Arsenal. Known for his work rate and pressing.',
+      image: 'https://www.google.com/s2/favicons?domain=arsenal.com&sz=128', description: 'Gabriel Jesus is a Brazilian footballer who plays as a forward for Arsenal. Known for his work rate and pressing.',
       link: 'https://www.arsenal.com', category: 'Players', upvotes: 31, upvotedBy: [],
       ratings: [r('TacticsPro', 2, 'Injury ruined his season', 1), r('NorwayFan', 2, 'Barely plays anymore', 2), r('PremFanatic', 3, 'Good when fit but never fit', 3), r('GoalKing', 1, 'Cant stay healthy', 4)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(2),
@@ -308,6 +308,14 @@ async function seedDatabase() {
   await db.collection('items').insertMany(items);
   console.log('🌱 Seeded database with', items.length, 'items');
 }
+
+// ── API Routes ──
+
+// Middleware to check DB connection
+const requireDB = (req, res, next) => {
+  if (!db) return res.status(503).json({ error: 'Database not connected yet, please try again shortly' });
+  next();
+};
 
 // ── Health Check (no DB required) ──
 app.get('/health', (req, res) => {
@@ -324,14 +332,6 @@ app.post('/api/admin/reseed', requireDB, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// ── API Routes ──
-
-// Middleware to check DB connection
-const requireDB = (req, res, next) => {
-  if (!db) return res.status(503).json({ error: 'Database not connected yet, please try again shortly' });
-  next();
-};
 
 // Get all items
 app.get('/api/items', requireDB, async (req, res) => {
@@ -350,7 +350,7 @@ app.get('/api/items', requireDB, async (req, res) => {
 });
 
 // Get single item
-app.get('/api/items/:id', async (req, res) => {
+app.get('/api/items/:id', requireDB, async (req, res) => {
   try {
     const item = await db.collection('items').findOne({ _id: new ObjectId(req.params.id) });
     if (!item) return res.status(404).json({ error: 'Not found' });
@@ -361,7 +361,7 @@ app.get('/api/items/:id', async (req, res) => {
 });
 
 // Submit new item
-app.post('/api/items', async (req, res) => {
+app.post('/api/items', requireDB, async (req, res) => {
   try {
     const { name, tagline, description, link, category, image, submittedBy } = req.body;
     if (!name || !tagline || !description || !category) {
@@ -381,7 +381,7 @@ app.post('/api/items', async (req, res) => {
 });
 
 // Toggle upvote
-app.post('/api/items/:id/upvote', async (req, res) => {
+app.post('/api/items/:id/upvote', requireDB, async (req, res) => {
   try {
     const { userId } = req.body;
     const item = await db.collection('items').findOne({ _id: new ObjectId(req.params.id) });
@@ -406,7 +406,7 @@ app.post('/api/items/:id/upvote', async (req, res) => {
 });
 
 // Add rating
-app.post('/api/items/:id/rate', async (req, res) => {
+app.post('/api/items/:id/rate', requireDB, async (req, res) => {
   try {
     const { userId, userName, score, review } = req.body;
     if (!userId || !userName || !score) return res.status(400).json({ error: 'Missing fields' });
@@ -436,7 +436,7 @@ app.post('/api/items/:id/rate', async (req, res) => {
 });
 
 // Get all feedback (ratings) across all items
-app.get('/api/feedback', async (req, res) => {
+app.get('/api/feedback', requireDB, async (req, res) => {
   try {
     const items = await db.collection('items').find({ 'ratings.0': { $exists: true } }).toArray();
     const feedback = [];
@@ -459,7 +459,7 @@ app.get('/api/feedback', async (req, res) => {
 });
 
 // Analytics endpoint
-app.get('/api/analytics', async (req, res) => {
+app.get('/api/analytics', requireDB, async (req, res) => {
   try {
     const items = await db.collection('items').find().toArray();
     const totalItems = items.length;
@@ -523,7 +523,7 @@ app.get('/api/analytics', async (req, res) => {
 });
 
 // User activity
-app.get('/api/user/:userId/activity', async (req, res) => {
+app.get('/api/user/:userId/activity', requireDB, async (req, res) => {
   try {
     const { userId } = req.params;
     const items = await db.collection('items').find().toArray();
