@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ChevronUp, ExternalLink, Star as StarIcon, TrendingUp, Users, BarChart3 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
-import { toggleUpvote, addRating, SESSION_ID, getAvgRating, getRatingDistribution, timeAgo, getUserProfile, type Item } from '../lib/store';
+import { toggleUpvote, addRating, SESSION_ID, getAvgRating, getRatingDistribution, timeAgo, getUserProfile, type Item, type AuthUser } from '../lib/store';
 
 const PIE_COLORS = ['#00BFA6', '#2F80ED', '#F2994A', '#EB5757', '#9B51E0'];
 
-interface Props { item: Item; onBack: () => void; onUpdate: (item: Item) => void; }
+interface Props { item: Item; onBack: () => void; onUpdate: (item: Item) => void; authUser?: AuthUser | null; }
 
-export function ItemDetail({ item, onBack, onUpdate }: Props) {
-  const [authorName, setAuthorName] = useState(getUserProfile().name || '');
+export function ItemDetail({ item, onBack, onUpdate, authUser }: Props) {
+  const [authorName, setAuthorName] = useState(authUser?.name || getUserProfile().name || '');
   const [ratingScore, setRatingScore] = useState(0);
   const [ratingHover, setRatingHover] = useState(0);
   const [ratingReview, setRatingReview] = useState('');

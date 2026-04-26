@@ -24,7 +24,7 @@ export function LoginPage() {
             transition={{ type: 'spring', damping: 15, delay: 0.1 }}
             className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#00BFA6] to-[#00897B] flex items-center justify-center mx-auto mb-4 shadow-lg shadow-[#00BFA6]/20"
           >
-            <span className="text-white font-black text-2xl">R</span>
+            <span className="text-white text-xl">⭐⭐⭐</span>
           </motion.div>
           <h1 className="text-2xl font-extrabold text-[#1E1E2D]">Welcome to RateMyStuff</h1>
           <p className="text-sm text-[#7B8190] mt-2">Rate anything — products, players, tools & more</p>

@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { type AnalyticsData } from '../lib/store';
 
 const PIE_COLORS = ['#00BFA6', '#2F80ED', '#F2994A', '#EB5757', '#9B51E0'];
-const CAT_COLORS: Record<string, string> = { Products: '#2F80ED', Services: '#00BFA6', Ideas: '#F2994A', Projects: '#EB5757', Tools: '#9B51E0' };
+const CAT_COLORS: Record<string, string> = { Products: '#2F80ED', Services: '#00BFA6', Ideas: '#F2994A', Projects: '#EB5757', Tools: '#9B51E0', Players: '#E53E3E' };
 
 interface Props {
   data: AnalyticsData | null;

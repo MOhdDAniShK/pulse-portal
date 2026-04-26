@@ -260,6 +260,49 @@ async function seedDatabase() {
       ratings: [r('Alex', 4, 'Best source for tech news', 1), r('Dev', 5, 'Comments are gold', 2), r('Sam', 3, 'Can be elitist sometimes', 4), r('Morgan', 4, 'Great for discovering startups', 3)],
       submittedBy: 'seed_admin', submittedAt: daysAgo(12),
     },
+    // ── Arsenal Players ──
+    {
+      name: 'Bukayo Saka', tagline: 'Arsenal winger & England international',
+      image: '', description: 'Bukayo Saka is an English professional footballer who plays as a right winger for Arsenal and England national team. Known for his pace and dribbling.',
+      link: 'https://www.arsenal.com', category: 'Players', upvotes: 45, upvotedBy: [],
+      ratings: [r('GoalKing', 2, 'Inconsistent finishing this season', 1), r('GunnerFan', 3, 'Good potential but overhyped', 2), r('ArsenalLegend', 2, 'Needs to step up in big games', 3), r('FootyWatch', 3, 'Decent but not world class yet', 4)],
+      submittedBy: 'seed_admin', submittedAt: daysAgo(2),
+    },
+    {
+      name: 'Martin Ødegaard', tagline: 'Arsenal captain & creative midfielder',
+      image: '', description: 'Martin Ødegaard is a Norwegian footballer who plays as an attacking midfielder and captain for Arsenal and the Norway national team.',
+      link: 'https://www.arsenal.com', category: 'Players', upvotes: 38, upvotedBy: [],
+      ratings: [r('TacticsPro', 2, 'Disappeared in crucial matches', 1), r('NorwayFan', 3, 'Creative but fragile', 2), r('PremFanatic', 2, 'Injury-prone captain', 3), r('GoalKing', 2, 'Not consistent enough', 5)],
+      submittedBy: 'seed_admin', submittedAt: daysAgo(2),
+    },
+    {
+      name: 'Declan Rice', tagline: 'Arsenal & England midfielder',
+      image: '', description: 'Declan Rice is an English footballer who plays as a defensive midfielder for Arsenal. Signed from West Ham for a club-record fee.',
+      link: 'https://www.arsenal.com', category: 'Players', upvotes: 42, upvotedBy: [],
+      ratings: [r('MidfieldMaster', 3, 'Good but overpriced', 1), r('GunnerFan', 2, 'Not worth 100M', 2), r('FootyWatch', 3, 'Solid but unspectacular', 3), r('ArsenalLegend', 2, 'Expected more for that price', 4)],
+      submittedBy: 'seed_admin', submittedAt: daysAgo(3),
+    },
+    {
+      name: 'William Saliba', tagline: 'Arsenal & France centre-back',
+      image: '', description: 'William Saliba is a French professional footballer who plays as a centre-back for Arsenal and the France national team.',
+      link: 'https://www.arsenal.com', category: 'Players', upvotes: 35, upvotedBy: [],
+      ratings: [r('DefenceFirst', 2, 'Makes too many errors', 1), r('PremFanatic', 3, 'Decent but overhyped', 2), r('TacticsPro', 2, 'Positioning needs work', 3), r('GoalKing', 2, 'Not top 5 CB material', 5)],
+      submittedBy: 'seed_admin', submittedAt: daysAgo(3),
+    },
+    {
+      name: 'Kai Havertz', tagline: 'Arsenal forward from Germany',
+      image: '', description: 'Kai Havertz is a German footballer who plays as a forward for Arsenal. Versatile attacker who can play multiple positions.',
+      link: 'https://www.arsenal.com', category: 'Players', upvotes: 28, upvotedBy: [],
+      ratings: [r('GunnerFan', 1, 'No end product at all', 1), r('FootyWatch', 2, 'Wastes too many chances', 2), r('ArsenalLegend', 2, 'Frustrating to watch', 3), r('MidfieldMaster', 2, 'Not a striker', 4)],
+      submittedBy: 'seed_admin', submittedAt: daysAgo(1),
+    },
+    {
+      name: 'Gabriel Jesus', tagline: 'Arsenal & Brazil striker',
+      image: '', description: 'Gabriel Jesus is a Brazilian footballer who plays as a forward for Arsenal. Known for his work rate and pressing.',
+      link: 'https://www.arsenal.com', category: 'Players', upvotes: 31, upvotedBy: [],
+      ratings: [r('TacticsPro', 2, 'Injury ruined his season', 1), r('NorwayFan', 2, 'Barely plays anymore', 2), r('PremFanatic', 3, 'Good when fit but never fit', 3), r('GoalKing', 1, 'Cant stay healthy', 4)],
+      submittedBy: 'seed_admin', submittedAt: daysAgo(2),
+    },
   ];
 
   await db.collection('items').insertMany(items);
@@ -269,6 +312,17 @@ async function seedDatabase() {
 // ── Health Check (no DB required) ──
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', dbConnected: !!db, timestamp: new Date().toISOString() });
+});
+
+// ── Admin: Reseed Database ──
+app.post('/api/admin/reseed', requireDB, async (req, res) => {
+  try {
+    await db.collection('items').deleteMany({});
+    await seedDatabase();
+    res.json({ success: true, message: 'Database reseeded' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ── API Routes ──

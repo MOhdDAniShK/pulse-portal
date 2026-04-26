@@ -129,7 +129,7 @@ function App() {
       <aside className={`${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:sticky top-0 h-screen z-50 lg:z-auto w-[220px] bg-white border-r border-[#E8ECF0] flex flex-col flex-shrink-0 overflow-y-auto transition-transform duration-300`}>
         <div className="px-4 py-4 flex items-center justify-between border-b border-[#E8ECF0]">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00BFA6] to-[#00897B] flex items-center justify-center"><span className="text-white font-black text-xs">R</span></div>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00BFA6] to-[#00897B] flex items-center justify-center"><span className="text-white text-[10px] tracking-tighter">⭐⭐⭐</span></div>
             <span className="text-sm font-extrabold text-[#1E1E2D]">RateMyStuff</span>
           </div>
           <button onClick={() => setMobileMenuOpen(false)} className="lg:hidden p-1 hover:bg-gray-100 rounded cursor-pointer">
@@ -237,7 +237,7 @@ function App() {
           {/* ── Listings / Detail ── */}
           {(page === 'listings' || selectedItem) && (
             selectedItem ? (
-              <ItemDetail item={selectedItem} onBack={() => setSelectedItemId(null)} onUpdate={(updated) => setItems(prev => prev.map(i => i._id === updated._id ? updated : i))} />
+              <ItemDetail item={selectedItem} onBack={() => setSelectedItemId(null)} onUpdate={(updated) => setItems(prev => prev.map(i => i._id === updated._id ? updated : i))} authUser={authUser} />
             ) : (
               <div className="max-w-[1100px] mx-auto">
                 {/* Category Filters */}
